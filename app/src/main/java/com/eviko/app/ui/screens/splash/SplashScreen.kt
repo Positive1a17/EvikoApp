@@ -14,9 +14,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.eviko.app.R
 import com.eviko.app.ui.navigation.Screen
+import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavController) {
+    LaunchedEffect(Unit) {
+        delay(2000)
+        navController.navigate(Screen.Login.route) {
+            popUpTo(Screen.Splash.route) { inclusive = true }
+        }
+    }
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -30,12 +38,5 @@ fun SplashScreen(navController: NavController) {
         CircularProgressIndicator(
             modifier = Modifier.align(Alignment.BottomCenter)
         )
-    }
-    
-    LaunchedEffect(Unit) {
-        // TODO: Check auth state
-        navController.navigate(Screen.Login.route) {
-            popUpTo(Screen.Splash.route) { inclusive = true }
-        }
     }
 } 
