@@ -5,7 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -18,14 +18,13 @@ import com.eviko.app.data.model.Product
 fun ProductItem(
     product: Product,
     onClick: () -> Unit,
-    onFavoriteClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onFavoriteClick: () -> Unit
 ) {
     Card(
-        onClick = onClick,
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(200.dp),
+        onClick = onClick
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
@@ -43,8 +42,8 @@ fun ProductItem(
             ) {
                 Icon(
                     imageVector = if (product.isFavorite) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
-                    contentDescription = "Favorite",
-                    tint = if (product.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                    contentDescription = if (product.isFavorite) "Remove from favorites" else "Add to favorites",
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
             
@@ -52,18 +51,15 @@ fun ProductItem(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth(),
-                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
             ) {
                 Column(
                     modifier = Modifier.padding(8.dp)
                 ) {
                     Text(
                         text = product.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        style = MaterialTheme.typography.titleMedium
                     )
-                    
                     Text(
                         text = "${product.price} ₽",
                         style = MaterialTheme.typography.bodyLarge,
