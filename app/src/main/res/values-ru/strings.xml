@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Эвико</string>
+    
+    <!-- Common -->
+    <string name="next">Далее</string>
+    <string name="back">Назад</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить</string>
+    <string name="edit">Редактировать</string>
+    <string name="search">Поиск</string>
+    <string name="filter">Фильтр</string>
+    <string name="sort">Сортировка</string>
+    
+    <!-- Auth -->
+    <string name="login">Вход</string>
+    <string name="register">Регистрация</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="confirm_password">Подтвердите пароль</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="login_with_google">Войти через Google</string>
+    <string name="login_with_facebook">Войти через Facebook</string>
+    
+    <!-- Profile -->
+    <string name="profile">Профиль</string>
+    <string name="settings">Настройки</string>
+    <string name="language">Язык</string>
+    <string name="theme">Тема</string>
+    <string name="notifications">Уведомления</string>
+    <string name="addresses">Адреса</string>
+    <string name="orders">Заказы</string>
+    
+    <!-- Catalog -->
+    <string name="catalog">Каталог</string>
+    <string name="categories">Категории</string>
+    <string name="favorites">Избранное</string>
+    <string name="recently_viewed">Недавно просмотренные</string>
+    <string name="price">Цена</string>
+    <string name="add_to_cart">В корзину</string>
+    
+    <!-- Cart -->
+    <string name="cart">Корзина</string>
+    <string name="checkout">Оформить заказ</string>
+    <string name="total">Итого</string>
+    <string name="empty_cart">Ваша корзина пуста</string>
+    
+    <!-- 3D Viewer -->
+    <string name="view_3d">Просмотр в 3D</string>
+    <string name="view_ar">Просмотр в AR</string>
+    <string name="rotate">Поворот</string>
+    <string name="zoom">Масштаб</string>
+    <string name="change_color">Изменить цвет</string>
+    <string name="change_material">Изменить материал</string>
+</resources> 
