@@ -34,10 +34,11 @@ android {
     
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.9.22"
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
     
     compileOptions {
