@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Eviko</string>
+    <string name="app_name">EvikoApp</string>
     
     <!-- Common -->
     <string name="next">Next</string>
@@ -16,8 +16,9 @@
     <!-- Auth -->
     <string name="login">Login</string>
     <string name="register">Register</string>
-    <string name="email">Email</string>
+    <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="email">Email</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="login_with_google">Login with Google</string>
@@ -53,4 +54,7 @@
     <string name="zoom">Zoom</string>
     <string name="change_color">Change Color</string>
     <string name="change_material">Change Material</string>
+    
+    <!-- Admin Panel -->
+    <string name="admin_panel">Admin Panel</string>
 </resources> 
