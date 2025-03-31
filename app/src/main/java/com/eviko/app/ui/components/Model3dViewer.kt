@@ -10,10 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.filament.Engine
 import com.google.android.filament.View
 import com.google.android.filament.utils.ModelViewer
+import com.google.android.filament.utils.Utils
 import com.google.android.filament.utils.ktx.createModelViewer
 import com.google.android.filament.utils.ktx.destroyModelViewer
 import com.google.android.filament.utils.ktx.loadGlb
@@ -25,27 +28,38 @@ fun Model3dViewer(
     modelUrl: String,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     var isDarkMode by remember { mutableStateOf(false) }
     var modelViewer by remember { mutableStateOf<ModelViewer?>(null) }
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(modelUrl) {
+    LaunchedEffect(context) {
+        Utils.init()
         scope.launch {
-            modelViewer = createModelViewer().apply {
-                loadGlb(context, modelUrl)
-                transformToUnitCube()
-            }
+            modelViewer = createModelViewer(context)
+            modelViewer?.loadGlb(context, modelUrl)
+            modelViewer?.transformToUnitCube()
         }
     }
 
-    DisposableEffect(Unit) {
+    DisposableEffect(context) {
         onDispose {
-            modelViewer?.destroyModelViewer()
+            modelViewer?.destroy()
+            Utils.cleanup()
         }
     }
 
     Box(modifier = modifier) {
-        // TODO: Implement Filament View rendering
+        AndroidView(
+            factory = { context ->
+                modelViewer?.let { viewer ->
+                    viewer.loadGlb(context, modelUrl)
+                    viewer.transformToUnitCube()
+                }
+                viewer?.view
+            },
+            modifier = modifier
+        )
         
         IconButton(
             onClick = { isDarkMode = !isDarkMode },

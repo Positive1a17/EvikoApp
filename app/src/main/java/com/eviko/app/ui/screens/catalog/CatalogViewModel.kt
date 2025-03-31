@@ -11,66 +11,69 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
+class CatalogViewModel @Inject constructor(
+    private val productRepository: ProductRepository,
+    private val categoryRepository: CategoryRepository
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow<CatalogUiState>(CatalogUiState.Loading)
+    val uiState: StateFlow<CatalogUiState> = _uiState.asStateFlow()
+
+    private val _selectedCategory = MutableStateFlow<Category?>(null)
+    val selectedCategory: StateFlow<Category?> = _selectedCategory.asStateFlow()
+
+    init {
+        loadCategories()
+        loadProducts()
+    }
+
+    private fun loadCategories() {
+        viewModelScope.launch {
+            categoryRepository.getAllCategories()
+                .catch { e ->
+                    _uiState.value = CatalogUiState.Error(e.message ?: "Unknown error")
+                }
+                .collect { categories ->
+                    _uiState.value = CatalogUiState.Success(
+                        categories = categories,
+                        products = emptyList()
+                    )
+                }
+        }
+    }
+
+    private fun loadProducts() {
+        viewModelScope.launch {
+            productRepository.getAllProducts()
+                .catch { e ->
+                    _uiState.value = CatalogUiState.Error(e.message ?: "Unknown error")
+                }
+                .collect { products ->
+                    _uiState.value = when (val currentState = _uiState.value) {
+                        is CatalogUiState.Success -> currentState.copy(products = products)
+                        else -> CatalogUiState.Success(categories = emptyList(), products = products)
+                    }
+                }
+        }
+    }
+
+    fun selectCategory(category: Category?) {
+        _selectedCategory.value = category
+    }
+
+    fun toggleFavorite(productId: String) {
+        viewModelScope.launch {
+            productRepository.toggleFavorite(productId)
+        }
+    }
+}
+
 sealed class CatalogUiState {
-    object Initial : CatalogUiState()
     object Loading : CatalogUiState()
     data class Success(
         val categories: List<Category>,
         val products: List<Product>
     ) : CatalogUiState()
     data class Error(val message: String) : CatalogUiState()
-}
-
-@HiltViewModel
-class CatalogViewModel @Inject constructor(
-    private val categoryRepository: CategoryRepository,
-    private val productRepository: ProductRepository
-) : ViewModel() {
-
-    private val _uiState = MutableStateFlow<CatalogUiState>(CatalogUiState.Initial)
-    val uiState: StateFlow<CatalogUiState> = _uiState.asStateFlow()
-
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
-
-    private val _selectedCategory = MutableStateFlow<Long?>(null)
-    val selectedCategory: StateFlow<Long?> = _selectedCategory.asStateFlow()
-
-    init {
-        loadData()
-    }
-
-    private fun loadData() {
-        viewModelScope.launch {
-            _uiState.value = CatalogUiState.Loading
-            try {
-                val categories = categoryRepository.getAllCategories()
-                val products = productRepository.getAllProducts()
-                _uiState.value = CatalogUiState.Success(categories, products)
-            } catch (e: Exception) {
-                _uiState.value = CatalogUiState.Error(e.message ?: "Unknown error")
-            }
-        }
-    }
-
-    fun setSearchQuery(query: String) {
-        _searchQuery.value = query
-        // TODO: Implement search filtering
-    }
-
-    fun selectCategory(categoryId: Long) {
-        _selectedCategory.value = categoryId
-        // TODO: Implement category filtering
-    }
-
-    fun toggleFavorite(productId: Long, isFavorite: Boolean) {
-        viewModelScope.launch {
-            try {
-                productRepository.updateProductFavoriteStatus(productId, isFavorite)
-                loadData() // Reload data to update UI
-            } catch (e: Exception) {
-                // Handle error
-            }
-        }
-    }
 } 

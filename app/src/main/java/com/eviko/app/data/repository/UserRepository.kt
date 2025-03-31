@@ -96,4 +96,55 @@ class UserRepository @Inject constructor(
     suspend fun isAdmin(username: String, password: String): Boolean {
         return userDao.getUserByCredentials(username, password)?.role == UserRole.ADMIN
     }
+
+    suspend fun getUserByEmail(email: String): User? {
+        return userDao.getUserByEmail(email)
+    }
+
+    suspend fun createUser(email: String, password: String, username: String): Result<User> {
+        return try {
+            val user = User(
+                email = email,
+                password = password,
+                username = username,
+                role = UserRole.USER,
+                createdAt = System.currentTimeMillis()
+            )
+            userDao.insertUser(user)
+            Result.success(user)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun updateLastLogin(userId: String): Result<Unit> {
+        return try {
+            userDao.updateLastLogin(userId, System.currentTimeMillis())
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    fun getCurrentUser(userId: String): Flow<User?> {
+        return userDao.getUserById(userId)
+    }
+
+    suspend fun updateUser(user: User): Result<Unit> {
+        return try {
+            userDao.updateUser(user)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun deleteUser(userId: String): Result<Unit> {
+        return try {
+            userDao.deleteUser(userId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 } 

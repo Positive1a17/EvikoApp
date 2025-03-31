@@ -28,34 +28,38 @@ fun NavGraph(navController: NavHostController) {
     ) {
         composable(Screen.Splash.route) {
             SplashScreen(
-                onNavigateToLogin = { navController.navigate(Screen.Login.route) },
-                onNavigateToMain = { navController.navigate(Screen.Catalog.route) }
+                navController = navController
             )
         }
 
         composable(Screen.Login.route) {
             LoginScreen(
-                onNavigateToRegister = { navController.navigate(Screen.Register.route) },
-                onNavigateToMain = { navController.navigate(Screen.Catalog.route) }
+                navController = navController
             )
         }
 
         composable(Screen.Register.route) {
             RegisterScreen(
-                onNavigateToLogin = { navController.navigate(Screen.Login.route) }
+                navController = navController
             )
         }
 
         composable(Screen.Catalog.route) {
-            CatalogScreen()
+            CatalogScreen(
+                navController = navController
+            )
         }
 
         composable(Screen.Cart.route) {
-            CartScreen()
+            CartScreen(
+                navController = navController
+            )
         }
 
         composable(Screen.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(
+                navController = navController
+            )
         }
     }
 } 
