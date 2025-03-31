@@ -11,13 +11,6 @@ plugins {
     id("com.google.dagger.hilt.android") version "2.50" apply false
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 } 
