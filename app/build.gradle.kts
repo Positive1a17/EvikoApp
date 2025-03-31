@@ -46,7 +46,7 @@ android {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
     
-    packaging {
+    packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -80,12 +80,19 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.sqlite:sqlite:2.4.0")
+    implementation("androidx.sqlite:sqlite-ktx:2.4.0")
     
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
     
     // Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // Filament
+    implementation("com.google.android.filament:filament-android:1.45.0")
+    implementation("com.google.android.filament:filament-utils-android:1.45.0")
+    implementation("com.google.android.filament:gltfio-android:1.45.0")
     
     // Testing
     testImplementation("junit:junit:4.13.2")
